@@ -168,7 +168,7 @@ class IOSCfgLine(BaseCfgLine):
             return True
         return False
 
-    _VIRTUAL_INTF_REGEX_STR = r"""^interface\s+(Loopback|Vlan|Tunnel|Dialer|Virtual-Template|Port-Channel)"""
+    _VIRTUAL_INTF_REGEX_STR = r'^interface\s+(Loopback|Vlan|Tunnel|tunnel-te[1-9]+$|Dialer|Virtual-Template|Port-Channel)'
     _VIRTUAL_INTF_REGEX = re.compile(_VIRTUAL_INTF_REGEX_STR, re.I)
 
     @property
@@ -251,7 +251,7 @@ class IOSCfgLine(BaseCfgLine):
            False
            >>>
         """
-        intf_regex = r'^interface\s+(.*?\Sthernet)'
+        intf_regex = r'^interface\s+(.*thernet|.*GigE)'
         if self.re_match(intf_regex):
             return True
         return False
@@ -262,7 +262,7 @@ class IOSCfgLine(BaseCfgLine):
 
         """
         retval = self.re_match_iter_typed(
-            r'^\s*channel-group\s+(\d+)', result_type=bool, default=False)
+            r'^\s*(?:bundle\sid|channel-group)\s+(\d+)', result_type=bool, default=False)
         return retval
 
     @property
@@ -271,7 +271,7 @@ class IOSCfgLine(BaseCfgLine):
 
         """
         retval = self.re_match_iter_typed(
-            r'^\s*channel-group\s+(\d+)', result_type=int, default=-1)
+            r'^\s*(?:bundle\sid|channel-group)\s+(\d+)', result_type=int, default=-1)
         return retval
 
     @property
@@ -279,7 +279,11 @@ class IOSCfgLine(BaseCfgLine):
         """Return a boolean indicating whether this port is a port-channel intf
 
         """
-        return ('channel' in self.name.lower())
+        if 'channel' or 'undle' in self.name.lower():
+            return True
+        else:
+            return False
+        #return ('channel' in self.name.lower())
 
 
 ##
@@ -826,7 +830,7 @@ class BaseIOSIntfLine(IOSCfgLine):
     @property
     def vrf(self):
         retval = self.re_match_iter_typed(
-            r'^\s*ip\svrf\sforwarding\s(\S+)$', result_type=str, default='')
+            r'^(?:\sip\s|\s*)vrf\s(?:forwarding\s(\S+)|(\S+))$', result_type=str, default='')
         return retval
 
     @property
