@@ -277,13 +277,12 @@ class IOSCfgLine(BaseCfgLine):
     @property
     def is_portchannel(self):
         """Return a boolean indicating whether this port is a port-channel intf
-
         """
-        if 'channel' or 'undle' in self.name.lower():
+        intf_regex = r'^interface\s+(.*channel|.*undle)'
+        if self.re_match(intf_regex):
             return True
         else:
             return False
-        #return ('channel' in self.name.lower())
 
 
 ##
