@@ -69,9 +69,9 @@ As of CiscoConfParse 1.2.4, you can parse `brace-delimited configurations`_
 into a Cisco IOS style (see `Github Issue #17`_), which means that 
 CiscoConfParse understands these configurations:
 
-- Juniper Networks Junos, and Screenos
+- Juniper Networks Junos
 - F5 Networks configurations
-"{{ mgmt_password }}"
+
 CiscoConfParse also handles anything that has a Cisco IOS style of configuration, which includes:
 
 - Cisco IOS, Cisco Nexus, Cisco IOS-XR, Cisco IOS-XE, Aironet OS, Cisco ASA, Cisco CatOS
@@ -82,6 +82,7 @@ CiscoConfParse also handles anything that has a Cisco IOS style of configuration
 - Dell PowerConnect Switches
 - Extreme Networks
 - Enterasys
+- Screenos
 
 
 Docs
@@ -110,7 +111,7 @@ already have setuptools_, you can install as usual:
 ::
 
       # Substitute whatever ciscoconfparse version you like...
-      easy_install -U ciscoconfparse==1.2.47
+      easy_install -U ciscoconfparse==1.2.49
 
 Alternatively you can install into Python2.x with pip_:
 

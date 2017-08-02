@@ -830,7 +830,8 @@ class BaseIOSIntfLine(IOSCfgLine):
     @property
     def vrf(self):
         retval = self.re_match_iter_typed(
-            r'^(?:\sip\s|\s*)vrf\s(?:forwarding\s(\S+)|(\S+))$', result_type=str, default='')
+            r'^\s*(ip\s+)*vrf\sforwarding\s(\S+)$', result_type=str, 
+            group=2, default='')
         return retval
 
     @property
@@ -1947,8 +1948,8 @@ class IOSAaaGroupServerLine(BaseCfgLine):
     @property
     def vrf(self):
         return self.re_match_iter_typed(
-            r'^\s+ip\s+vrf\s+forwarding\s+(\S+)',
-            group=1,
+            r'^\s+(ip\s+)*vrf\s+forwarding\s+(\S+)',
+            group=2,
             result_type=str,
             default='')
 
